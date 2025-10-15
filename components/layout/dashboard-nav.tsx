@@ -1,13 +1,10 @@
 import Link from "next/link"
-import { FileText, Scale, LogOut } from "lucide-react"
+import { FileText, Scale } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { auth, signOut } from "@/lib/auth"
 
-export async function DashboardNav() {
-  const session = await auth()
-
+export function DashboardNav() {
   return (
-    <nav className="border-b">
+    <nav className="border-b bg-background">
       <div className="container flex h-16 items-center px-4">
         <div className="flex gap-6 md:gap-10">
           <Link href="/" className="flex items-center space-x-2">
@@ -31,19 +28,8 @@ export async function DashboardNav() {
           </div>
         </div>
         
-        <div className="ml-auto flex items-center gap-4">
-          <span className="text-sm">{session?.user?.email}</span>
-          <form
-            action={async () => {
-              "use server"
-              await signOut()
-            }}
-          >
-            <Button variant="ghost" size="sm" type="submit">
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
-          </form>
+        <div className="ml-auto">
+          <span className="text-sm text-muted-foreground">Demo User</span>
         </div>
       </div>
     </nav>

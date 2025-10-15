@@ -1,101 +1,80 @@
-// src/components/features/welcome-screen.tsx
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { FileText, Scale, Briefcase, FileSignature, Mail, Building } from "lucide-react"
+// components/features/welcome-screen.tsx
+"use client"
 
-interface WelcomeScreenProps {
-  onSelectTemplate: (prompt: string) => void
+import { FileText, Scale, MessageSquare, type LucideIcon } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+
+interface PromptTemplate {
+  icon: LucideIcon
+  title: string
+  description: string
+  prompt: string
 }
 
-const documentTemplates = [
+interface WelcomeScreenProps {
+  onSelectPrompt: (prompt: string) => void
+}
+
+const WELCOME_PROMPTS: PromptTemplate[] = [
   {
     icon: FileText,
-    title: "Employment Contract",
-    description: "Create a comprehensive employment agreement",
-    prompt: "I need to draft an employment contract for a full-time software engineer position. Include standard clauses for confidentiality, non-compete, and intellectual property rights.",
-  },
-  {
-    icon: Briefcase,
-    title: "Service Agreement",
-    description: "Professional services contract template",
-    prompt: "Draft a service agreement for consulting services. Include scope of work, payment terms, deliverables, and termination clauses.",
-  },
-  {
-    icon: FileSignature,
-    title: "Non-Disclosure Agreement",
-    description: "Protect confidential information",
-    prompt: "Create a mutual non-disclosure agreement for a potential business partnership. Include provisions for confidential information definition and duration of obligations.",
-  },
-  {
-    icon: Building,
-    title: "Lease Agreement",
-    description: "Residential or commercial lease",
-    prompt: "Draft a commercial lease agreement for office space. Include rent amount, security deposit, maintenance responsibilities, and lease term.",
-  },
-  {
-    icon: Mail,
-    title: "Demand Letter",
-    description: "Formal notice for payment or action",
-    prompt: "Write a demand letter for unpaid services. Include invoice details, payment deadline, and consequences of non-payment.",
+    title: "Draft Legal Document",
+    description: "Create contracts, agreements, or notices",
+    prompt: "Help me draft a rental agreement"
   },
   {
     icon: Scale,
-    title: "Partnership Agreement",
-    description: "Business partnership terms",
-    prompt: "Create a partnership agreement for a two-partner business venture. Include profit sharing, decision-making authority, and exit provisions.",
+    title: "Legal Consultation",
+    description: "Get advice on Bangladesh laws",
+    prompt: "What are the legal requirements for starting a business in Bangladesh?"
   },
+  {
+    icon: MessageSquare,
+    title: "Document Review",
+    description: "Review and analyze legal documents",
+    prompt: "Review this contract for potential issues"
+  }
 ]
 
-export function WelcomeScreen({ onSelectTemplate }: WelcomeScreenProps) {
+export function WelcomeScreen({ onSelectPrompt }: WelcomeScreenProps) {
   return (
-    <div className="flex flex-col items-center justify-center h-full p-8">
-      <div className="max-w-4xl w-full space-y-8">
-        {/* Header */}
+    <div className="flex items-center justify-center h-full p-8">
+      <div className="max-w-2xl w-full space-y-8">
         <div className="text-center space-y-4">
-          <div className="flex justify-center">
-            <div className="p-4 bg-primary/10 rounded-full">
-              <FileText className="h-12 w-12 text-primary" />
-            </div>
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl">
+            <Scale className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-3xl font-bold">Document Drafting</h1>
-          <p className="text-muted-foreground text-lg">
-            Select a document template to get started, or describe what you need
+          <h1 className="text-3xl font-bold">সহজ আইন - SohozAin</h1>
+          <p className="text-lg text-muted-foreground">
+            AI Legal Assistant for Bangladesh Laws
           </p>
         </div>
 
-        {/* Template Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {documentTemplates.map((template, index) => {
-            const Icon = template.icon
+        <div className="grid grid-cols-1 gap-4">
+          {WELCOME_PROMPTS.map((prompt, idx) => {
+            const IconComponent = prompt.icon
             return (
               <Card
-                key={index}
-                className="p-6 cursor-pointer hover:shadow-md hover:border-primary/50 transition-all"
-                onClick={() => onSelectTemplate(template.prompt)}
+                key={idx}
+                className="cursor-pointer hover:border-primary hover:bg-accent transition-all group"
+                onClick={() => onSelectPrompt(prompt.prompt)}
               >
-                <div className="space-y-3">
-                  <div className="flex items-start justify-between">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <Icon className="h-5 w-5 text-primary" />
-                    </div>
+                <CardContent className="flex items-start gap-4 p-4">
+                  <div className="p-2 bg-muted rounded-lg group-hover:bg-primary/10 transition-colors">
+                    <IconComponent className="w-5 h-5 text-muted-foreground group-hover:text-primary" />
                   </div>
-                  <div>
-                    <h3 className="font-semibold">{template.title}</h3>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {template.description}
-                    </p>
+                  <div className="flex-1">
+                    <h3 className="font-semibold mb-1">{prompt.title}</h3>
+                    <p className="text-sm text-muted-foreground">{prompt.description}</p>
                   </div>
-                </div>
+                </CardContent>
               </Card>
             )
           })}
         </div>
 
-        {/* Custom Prompt Hint */}
-        <div className="text-center">
-          <p className="text-sm text-muted-foreground">
-            Or type your own requirements in the chat below
-          </p>
+        <div className="text-center text-sm text-muted-foreground">
+          Start a conversation or choose a prompt above
         </div>
       </div>
     </div>
